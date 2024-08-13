@@ -165,6 +165,15 @@ def create_table(conn, df, table_name):
         for column in df.columns
     )
     
+     # Check if 'hidden' column exists in the 'jobs' table
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(jobs);")
+    columns = [info[1] for info in cursor.fetchall()]
+    if 'hidden' not in columns:
+        cursor.execute("ALTER TABLE jobs ADD COLUMN hidden INTEGER DEFAULT 0;")
+        conn.commit()
+        print("Added 'hidden' column to 'jobs' table.")
+
     # Prepare SQL query to create a new table
     create_table_sql = f"""
         CREATE TABLE IF NOT EXISTS "{table_name}" (
