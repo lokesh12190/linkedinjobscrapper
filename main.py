@@ -164,7 +164,7 @@ def create_table(conn, df, table_name):
         f'"{column}" {type_mapping[str(df.dtypes[column])]}'
         for column in df.columns
     )
-
+    
     # Prepare SQL query to create a new table
     create_table_sql = f"""
         CREATE TABLE IF NOT EXISTS "{table_name}" (
